@@ -22,15 +22,16 @@ var gameLayer = cc.Layer.extend({
         this.screenWidth = size.width;
         this.screenHeight = size.height;
         
+        this.asteroids = [];
         this.lrgAsteroid = [];
         this.medAsteroid = [];
         this.smlAsteroid = []; 
-        this.maxLrg = 16;
-        this.maxMed = 0;
-        this.maxSml = 0;
+        this.maxLrg = 2;
+        this.maxMed = 4;
+        this.maxSml = 8;
         
-        this.newSpawn = 0;
-        this.spawnRate = 0;
+        //this.newSpawn = 0;
+        //this.spawnRate = 36000;
         
         var bckgrnd = new cc.Sprite.create(asset.Background_png);
         //console.log("background" + bckgrnd, bckgrnd);
@@ -42,26 +43,20 @@ var gameLayer = cc.Layer.extend({
         
 
         this.scheduleUpdate();
-        this.schedule(this.generateAsteroies);
-        //this.schedule(this.printKids);
-        this.schedule(this.collisions);
+        this.schedule(this.generateAsteroies, 1);
+        //this.schedule(this.collisions);
         
         
         return true;
     },
     
-    printKids:function() {
-        var layerKids = this.getChildren();
-        //console.log(layerKids);
-        for (var z = 0; z < layerKids.length; z++) {
-            var thisKid = layerKids[z];
-            //console.log("xPos: " + thisKid.x + " : yPos: " + thisKid.y);
+    update:function (dt) {
+        for(var i = 0; i < this.asteroids.length; i++) {
+            var roid = this.asteroids[i];
+            roid.move();
         }
         
-    },
-    
-    update:function (dt) {
-        for (var i = 0; i < this.lrgAsteroid.length; i++) {
+        /*for (var i = 0; i < this.lrgAsteroid.length; i++) {
             var lrgRoid = this.lrgAsteroid[i];
             if (lrgRoid.x < -32 || lrgRoid.x > this.screenWidth + 32 || 
                     lrgRoid.y < -32 || lrgRoid.y > this.screenHeight + 32) {
@@ -100,18 +95,19 @@ var gameLayer = cc.Layer.extend({
                 smlRoid.y -= smlRoid.yVelocity;
                 smlRoid.rotation += 4;
             }
-        }
+        }*/
         
     },
     
     generateAsteroies:function() {
-        if (this.newSpawn > this.spawnRate) {
-        //if (true) {    
-            this.newSpawn = 0;
+        
+        
+        //if (this.newSpawn > this.spawnRate) {  
+           // this.newSpawn = 0;
+            console.log("generate!");
             
-            var newRoid = this.createAsteroid();
             
-            if (newRoid !== null) {
+            //if (newRoid !== null) {
                 var midX = this.screenWidth/2;
                 var midY = this.screenHeight/2;
 
@@ -166,8 +162,13 @@ var gameLayer = cc.Layer.extend({
                     xVol = Math.sin(radTraj);
                     yVol = Math.cos(radTraj); 
                 }
-
-                newRoid.x = xPos;
+                
+                var newRoid = new Asteroidz("lrg", 0.5, new Pos(xPos, yPos), new Vector(xVol, 0-yVol));
+                console.log(newRoid);
+                this.asteroids.push(newRoid);
+                this.addChild(newRoid, 1);
+                
+                /*newRoid.x = xPos;
                 newRoid.y = yPos;                
                 newRoid.xVelocity = xVol;
                 newRoid.yVelocity = yVol;
@@ -186,13 +187,14 @@ var gameLayer = cc.Layer.extend({
                 }
 
                 this.addChild(newRoid, 1);
-            }
-        }
-        this.newSpawn += 1;
+            }*/
+        //}
+        //this.newSpawn += 1;
         //console.log(this.newSpawn);
     },
     
     createAsteroid:function () {
+        
         var roidType = Math.floor(Math.random() * 3);
         
         var roid = null;
@@ -214,77 +216,7 @@ var gameLayer = cc.Layer.extend({
             }
         }
         return roid;
-    },
-
-    
-    collisions:function () {
-        var idxLg = [];
-        var idxMd = [];
-        var idxSm = [];        
-        
-        for (var i = 0; i < this.lrgAsteroid.length; i++) {
-            var lrgRoid1 = this.lrgAsteroid[i];
-            for (var j = i+1; j < this.lrgAsteroid.length; j++) {
-                var lrgRoid2 = this.lrgAsteroid[j];
-                var dis = lrgRoid1.posi.distanceTo(lrgRoid2.posi);
-                var minDis = lrgRoid1.radius + lrgRoid2.radius;
-                if (dis <= minDis) {
-                    //console.log("Roid1 pos = (" + lrgRoid1.x + "," + lrgRoid1.y + ")");
-                    //console.log("Roid2 pos = (" + lrgRoid2.x + "," + lrgRoid2.y + ")");
-                    //console.log("Distance betwen = " + dis);
-                    //console.log("Distance befor collision = " + (dis - minDis));
-                    //console.log("dis: " + dis);
-                    if (idxLg.indexOf(i) === -1) { idxLg.push(i); }
-                    if (idxLg.indexOf(j) === -1) { idxLg.push(j); } 
-                    this.breakApart(lrgRoid1, lrgRoid2);
-                    
-                }
-            }
-            /*
-            for (j = 0; j < this.medAsteroid.length; j++) {
-                var medRoid1 = this.medAsteroid[j];
-                if (this.distance(lrgRoid1.x, lrgRoid1.y, medRoid1.x, medRoid1.y) < (lrgRoid1.radius+medRoid1.radius)) {
-                    this.breakApart(lrgRoid1, medRoid1);
-                }
-            }
-            for (j = 0; j < this.smlAsteroid.length; j++) {
-                var smlRoid1 = this.smlAsteroid[j];
-                if (this.distance(lrgRoid1.x, lrgRoid1.y, smlRoid1.x, smlRoid1.y) < (lrgRoid1.radius+smlRoid1.radius)) {
-                    this.breakApart(lrgRoid1, smlRoid1);
-                }
-            }
-        }
-        
-        for (i = 0; i < this.medAsteroid.length; i++) {
-            var medRoid2 = this.medAsteroid[i];
-            for (j = i+1; j < this.medAsteroid.length; j++) {
-                var medRoid3 = this.medAsteroid[j];
-                if (this.distance(medRoid2.x, medRoid2.y, medRoid3.x, medRoid3.y) < (medRoid2.radius+medRoid3.radius)) {
-                    this.breakApart(medRoid2, medRoid3);
-                }
-            }
-            for (j = 0; j < this.smlAsteroid.length; j++) {
-                var smlRoid2 = this.smlAsteroid[j];
-                if (this.distance(medRoid2.x, medRoid2.y, smlRoid2.x, smlRoid2.y) < (medRoid2.radius+smlRoid2.radius)) {
-                    this.breakApart(medRoid2, smlRoid2);
-                }
-            }
-        }
-        
-        for (i = 0; i < this.medAsteroid.length; i++) {
-            var smlRoid3 = this.medAsteroid[i];
-            for (j = i+1; j < this.medAsteroid.length; j++) {
-                var smlRoid4 = this.medAsteroid[j];
-                if (this.distance(smlRoid3.x, smlRoid3.y, smlRoid4.x, smlRoid4.y) < (smlRoid3.radius+smlRoid4.radius)) {
-                    this.breakApart(smlRoid3, smlRoid4);
-                }
-            }
-        }*/
-        }
-        
-        this.removeCollided(idxLg, idxMd, idxSm);
-        
-    },
+    },   
     
     breakApart:function(obj1, obj2) {
         //var obj1a;
@@ -292,6 +224,8 @@ var gameLayer = cc.Layer.extend({
         //var obj2a;
         //var obj2b;
         
+        this.removeChild(obj1); this.removeChild(obj2);
+        /*
         if(obj1.name === "lrg") {
             if (obj2.name === "lrg") {
                 /*
@@ -319,14 +253,14 @@ var gameLayer = cc.Layer.extend({
                     obj2b.yVelocity = -obj2.xVelocity;
                     obj2b.x = obj2.x - obj2.radius;
                     obj2b.y = obj2.y - obj2.radius;
-                */
+                
                 //this.addChild(obj1a); this.addChild(obj1b); this.addChild(obj2a); this.addChild(obj2b);
                 //console.log("x1:" + obj1.x + " y1:" + obj1.y);
                 //console.log("x2:" + obj2.x + " y2:" + obj2.y);
                 
                 this.removeChild(obj1); this.removeChild(obj2);
             }
-            /*
+            
             else if (obj2.name === "med") {
                 
             }
@@ -382,17 +316,30 @@ var gameLayer = cc.Layer.extend({
             }
             
         }
-        */
-        }
+        
+        } */
         
     },
     
     removeCollided:function(idxLg, idxMd, idxSm) {
         idxLg.sort(this.bigToSmallSort);
-        if (idxLg.length > 0) { console.log(idxLg); }
-        for (var g = 0; g < idxLg.length; g++) {
-            var idxAt = idxLg[g];
+        idxMd.sort(this.bigToSmallSort);
+        idxSm.sort(this.bigToSmallSort);
+        
+        var idxAt = 0;
+        var currIdx = 0;
+        
+        for (currIdx = 0; currIdx < idxLg.length; currIdx++) {
+            idxAt = idxLg[currIdx];
             this.lrgAsteroid.splice(idxAt, 1);
+        }
+        for (currIdx = 0; currIdx < idxMd.length; currIdx++) {
+            idxAt = idxMd[currIdx];
+            this.medAsteroid.splice(idxAt, 1);
+        }
+        for (currIdx = 0; currIdx < idxSm.length; currIdx++) {
+            idxAt = idxSm[currIdx];
+            this.smlAsteroid.splice(idxAt, 1);
         }
     },
     
@@ -408,7 +355,6 @@ var gameLayer = cc.Layer.extend({
         return Math.sqrt((dx*dx)+(dy*dy));
     }
 });
-
 
 
 

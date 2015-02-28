@@ -1,19 +1,3 @@
-var largeAsteroid = cc.Sprite.extend({
-    ctor:function(scale) {
-      this._super(asset.Asteroid_png);
-      this.attr({
-            name : "lrg",
-            x: cc.winSize.width / 2,
-            y: cc.winSize.height / 2,
-            scale: scale,
-            rotation: 0,
-            xVelocity : 0,
-            yVelocity : 0,
-            radius : (this.getContentSize().width / 4),
-      });
-    }
-});
-
 var mediumAsteroid = cc.Sprite.extend({
     ctor:function(arg) {
       this._super(asset.Asteroid_png);
@@ -21,7 +5,7 @@ var mediumAsteroid = cc.Sprite.extend({
             name : "med",
             x: cc.winSize.width / 2,
             y: cc.winSize.height / 2,
-            scale: 0.25,
+            scale: 0.125,
             rotation: 0,
             xVelocity : 0,
             yVelocity : 0,
@@ -36,7 +20,7 @@ var smallAsteroid = cc.Sprite.extend({
             name : "sml",
             x: cc.winSize.width / 2,
             y: cc.winSize.height / 2,
-            scale: 0.125,
+            scale: 0.0625,
             rotation: 0,
             xVelocity : 0,
             yVelocity : 0,
@@ -44,6 +28,11 @@ var smallAsteroid = cc.Sprite.extend({
     }
 });
 
+//Asteroid with 		 pos: Pos
+//          and 	velocity: Vector
+//          and 	  	size: String
+//          and  	 inWorld: Boolean
+//          and enteredScene: Boolean
 var Asteroidz = cc.Sprite.extend({
     ctor:function(name, scale, posi, vector) {
       this._super(asset.Asteroid_png);
@@ -62,28 +51,21 @@ var Asteroidz = cc.Sprite.extend({
        this.inWorld = false;
 	   this.enteredScene = false;
        this.move = function() {
-		  this.posi.move(this.velocity);		
-		  //add wrap position code
+           this.rotation += 5;
+           this.posi.move(this.velocity);
+           if(this.posi.x < 0)
+               this.posi.x = cc.winSize.width;
+           if(this.posi.x > cc.winSize.width)
+               this.posi.x = 0;
+           if(this.posi.y < 0)
+               this.posi.y = cc.winSize.height;
+           if(this.posi.y > cc.winSize.height)
+               this.posi.y = 0;
            this.x = this.posi.x;
            this.y = this.posi.y;           
 	   };
     }
 });
-console.log(new Asteroidz("lrg", 0.5, new Pos(1,2)));
-//Asteroid with 		 pos: Pos
-//          and 	velocity: Vector
-//          and 	  	size: String
-//          and  	 inWorld: Boolean
-//          and enteredScene: Boolean
-function Asteroid (pos, velocity, size, inWorld, enteredScene) {
-	this.pos = pos;
-	this.velocity = velocity;
-	this.size = size;
-	this.inWorld = inWorld;
-	this.enteredScene = enteredScene;
-	
-	this.move = function() {
-		pos.move(velocity);		
-		//add wrap position code
-	};	
-}
+
+
+
