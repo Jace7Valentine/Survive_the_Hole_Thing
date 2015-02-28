@@ -54,48 +54,7 @@ var gameLayer = cc.Layer.extend({
         for(var i = 0; i < this.asteroids.length; i++) {
             var roid = this.asteroids[i];
             roid.move();
-        }
-        
-        /*for (var i = 0; i < this.lrgAsteroid.length; i++) {
-            var lrgRoid = this.lrgAsteroid[i];
-            if (lrgRoid.x < -32 || lrgRoid.x > this.screenWidth + 32 || 
-                    lrgRoid.y < -32 || lrgRoid.y > this.screenHeight + 32) {
-                this.removeChild(lrgRoid);
-                this.lrgAsteroid.splice(i, 1);
-            }
-            else {                  
-                lrgRoid.move();   
-                //console.log(lrgRoid);
-                lrgRoid.rotation += 1;
-                
-            }
-        }
-        for (i = 0; i < this.medAsteroid.length; i++) {
-            var medRoid = this.medAsteroid[i];
-            if (medRoid.x < -32 || medRoid.x > this.screenWidth + 32 ||
-                    medRoid.y < -32 || medRoid.y > this.screenHeight + 32) {
-                this.removeChild(medRoid);
-                this.medAsteroid.splice(i, 1);
-            }
-            else {
-                medRoid.x += medRoid.xVelocity;
-                medRoid.y -= medRoid.yVelocity;
-                medRoid.rotation += 2;
-            }
-        }
-        for (i = 0; i < this.smlAsteroid.length; i++) {
-            var smlRoid = this.smlAsteroid[i];
-            if (smlRoid.x < -64 || smlRoid.x > this.screenWidth + 64 ||
-                    smlRoid.y < -64 || smlRoid.y > this.screenHeight + 64) {
-                this.removeChild(smlRoid);
-                this.smlAsteroid.splice(i, 1);
-            }
-            else {
-                smlRoid.x += smlRoid.xVelocity;
-                smlRoid.y -= smlRoid.yVelocity;
-                smlRoid.rotation += 4;
-            }
-        }*/
+        }       
         
     },
     
@@ -104,10 +63,8 @@ var gameLayer = cc.Layer.extend({
         
         //if (this.newSpawn > this.spawnRate) {  
            // this.newSpawn = 0;
-            console.log("generate!");
+            console.log("generate!");          
             
-            
-            //if (newRoid !== null) {
                 var midX = this.screenWidth/2;
                 var midY = this.screenHeight/2;
 
@@ -166,31 +123,8 @@ var gameLayer = cc.Layer.extend({
                 var newRoid = new Asteroidz("lrg", 0.5, new Pos(xPos, yPos), new Vector(xVol, 0-yVol));
                 console.log(newRoid);
                 this.asteroids.push(newRoid);
-                this.addChild(newRoid, 1);
+                this.addChild(newRoid, 1);                
                 
-                /*newRoid.x = xPos;
-                newRoid.y = yPos;                
-                newRoid.xVelocity = xVol;
-                newRoid.yVelocity = yVol;
-                
-
-                if (newRoid.name === "lrg") {                    
-                    newRoid.posi = (new Pos(xPos,yPos));
-                    newRoid.velocity = new Vector(xVol, 0-yVol);
-                    this.lrgAsteroid.push(newRoid);
-                }
-                else if (newRoid.name === "med") {
-                    this.medAsteroid.push(newRoid);
-                }
-                else if (newRoid.name === "sml") {
-                    this.smlAsteroid.push(newRoid);
-                }
-
-                this.addChild(newRoid, 1);
-            }*/
-        //}
-        //this.newSpawn += 1;
-        //console.log(this.newSpawn);
     },
     
     createAsteroid:function () {
