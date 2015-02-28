@@ -68,10 +68,11 @@ var gameLayer = cc.Layer.extend({
                 this.removeChild(lrgRoid);
                 this.lrgAsteroid.splice(i, 1);
             }
-            else {    
-                lrgRoid.x += lrgRoid.xVelocity;
-                lrgRoid.y -= lrgRoid.yVelocity;
+            else {                  
+                lrgRoid.move();   
+                //console.log(lrgRoid);
                 lrgRoid.rotation += 1;
+                
             }
         }
         for (i = 0; i < this.medAsteroid.length; i++) {
@@ -167,11 +168,14 @@ var gameLayer = cc.Layer.extend({
                 }
 
                 newRoid.x = xPos;
-                newRoid.y = yPos;
+                newRoid.y = yPos;                
                 newRoid.xVelocity = xVol;
                 newRoid.yVelocity = yVol;
+                
 
-                if (newRoid.name === "lrg") {
+                if (newRoid.name === "lrg") {                    
+                    newRoid.posi = (new Pos(xPos,yPos));
+                    newRoid.velocity = new Vector(xVol, 0-yVol);
                     this.lrgAsteroid.push(newRoid);
                 }
                 else if (newRoid.name === "med") {
@@ -195,7 +199,8 @@ var gameLayer = cc.Layer.extend({
         
         if (roidType === 0) {
             if (this.lrgAsteroid.length < this.maxLrg) {
-                roid = new largeAsteroid();
+                roid = new Asteroidz("lrg", 0.5, new Pos(1,2), 
+                                     new Vector(0,0));                
             }
         }
         else if (roidType === 1) {
@@ -221,7 +226,7 @@ var gameLayer = cc.Layer.extend({
             var lrgRoid1 = this.lrgAsteroid[i];
             for (var j = i+1; j < this.lrgAsteroid.length; j++) {
                 var lrgRoid2 = this.lrgAsteroid[j];
-                var dis = this.distance(lrgRoid1.x, lrgRoid1.y, lrgRoid2.x, lrgRoid2.y);
+                var dis = lrgRoid1.posi.distanceTo(lrgRoid2.posi);
                 var minDis = lrgRoid1.radius + lrgRoid2.radius;
                 if (dis <= minDis) {
                     //console.log("Roid1 pos = (" + lrgRoid1.x + "," + lrgRoid1.y + ")");

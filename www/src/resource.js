@@ -9,3 +9,7 @@ var g_resources = [];
 for (var i in asset) {
     g_resources.push(asset[i]);
 }
+
+//Constants:
+var G = 2.5; //gravitational constant gravity
+var TICK = 1/cc.frameRate;// sec per tick
