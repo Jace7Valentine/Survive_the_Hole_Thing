@@ -2,7 +2,9 @@ var asset = {
     Asteroid_png : "asset/asteroid.png",
     Background_png : "asset/background.png",
     Blackhole_png : "asset/blackhole.png",
-    Ufo_png : "asset/ufo.png"
+    Ufo_png : "asset/ufo.png",
+    Screenshot_png : "asset/screenshot.png",
+    Gameover_png : "asset/GameOver.png"
 };
 
 var g_resources = [];

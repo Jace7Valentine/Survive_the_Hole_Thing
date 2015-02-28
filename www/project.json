@@ -15,6 +15,7 @@
         "src/app.js",
         "src/Physics.js",
         "src/asteroids.js",
-        "src/Listeners.js"
+        "src/Listeners.js",
+        "src/MenuStuff.js"
     ]
 }

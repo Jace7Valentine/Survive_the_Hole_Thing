@@ -13,22 +13,18 @@ var accelListen = cc.EventListener.create({
 
 var touchListen = cc.EventListener.create({
     event: cc.EventListener.TOUCH_ALL_AT_ONCE,
-    swallowTouches: true,
-    callback: function( ){
-        onTouchesBegin: function (touches, event) {
-            if (touches.length > 1) {
-                //destroy blackhole
-            }
-            else {
-                var touch = touches[0];
-                if (this.prevTouchId != touch.getID())
-                    this.prevTouchId = touch.getID();
-                else    
-                    var touchedHere = event.getCurrentTarget();
-                    var x = touchedHere.x;
-                    var y = touchedHere.y;
-                    //set blackhole x and y;
-            }
+    swallowTouches: true, onTouchBegan: function (touches, event) {
+        if (touches.length > 1) {
+            //destroy blackhole
+        }
+        else {
+            var touch = touches[0];
+            if (this.prevTouchId != touch.getID())
+                this.prevTouchId = touch.getID();
+            else  
+                var x = event.getCurrentTarget().x;
+                var y = event.getCurrentTarget().y;
+                //set blackhole x and y;
         }
     }
 });
