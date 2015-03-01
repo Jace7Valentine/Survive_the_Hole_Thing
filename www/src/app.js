@@ -42,6 +42,36 @@ var gameLayer = cc.Layer.extend({
         this.schedule(this.generateAsteroies, 1);
         this.schedule(this.collidez);        
         
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ALL_AT_ONCE,
+            swallowTouches: true, onTouchBegan: function (touches, event) {
+                if (touches.length > 1) {
+                    this.blackholeList[0].x = 10000;
+                    this.blackholeList[0].y = 10000;
+                    this.blackholeList[0].posi.x = 10000;
+                    this.blackholeList[0].posi.y = 10000;
+                }
+                else {
+                    var touch = touches[0];
+                    if (this.prevTouchId != touch.getID())
+                        this.prevTouchId = touch.getID();
+                    else  
+                        var xP = event.getCurrentTarget().x;
+                        var yP = event.getCurrentTarget().y;
+                        
+                        this.blackholeList[0].x = xP;
+                        this.blackholeList[0].y = yP;
+                        this.blackholeList[0].posi.x = xP;
+                        this.blackholeList[0].posi.y = yP;
+                        
+                }
+            }
+        }, this);
+        
+        
+        
+        
+        
         return true;
     },
     
