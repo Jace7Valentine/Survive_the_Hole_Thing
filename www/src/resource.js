@@ -27,4 +27,5 @@ for (var j in sound) {
 
 //Constants:
 var G = 2.5; //gravitational constant gravity
-var TICK = 1/cc.frameRate;// sec per tick
+var TICK = 1.0/60.0;// sec per tick
+var SPD = 120.0; // px per sec

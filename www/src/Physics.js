@@ -13,7 +13,7 @@ function Vector (x,y) {
 		return Math.sqrt(x * x + y * y);
 	}
 	this.unitize = function() {
-		var hat = 1/this.magnitude();
+		var hat = 1.0/this.magnitude();
 		this.scale(hat);
 	}
 	this.accelarate = function(vector) {
@@ -21,6 +21,13 @@ function Vector (x,y) {
 		this.dely += TICK * vector.dely;		
 	};
 };
+
+function rotateVect(vect1, angle) {
+   var vect = new Vector(0,0);
+   vect.delx = vect1.delx*Math.cos(angle) - vect1.dely*Math.sin(angle);
+   vect.dely = vect1.delx*Math.sin(angle) + vect1.dely*Math.cos(angle);
+   return vect;
+}
 
 function Pos (x, y) {
 	this.x = x;
@@ -35,8 +42,8 @@ function Pos (x, y) {
 		return Math.sqrt(x * x + y * y);
 	}
 	this.move = function(vector) {
-		this.x += vector.delx;
-		this.y += vector.dely;
+		this.x += TICK * vector.delx;
+		this.y += TICK * vector.dely;
 	};
 };
 
