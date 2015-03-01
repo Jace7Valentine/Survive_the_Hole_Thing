@@ -169,7 +169,7 @@ var gameLayer = cc.Layer.extend({
                     yVol = Math.cos(radTraj); 
                 }
                 
-                var newRoid = new Asteroidz("lrg", 0.5, new Pos(xPos, yPos), new Vector(xVol, 0-yVol));
+                var newRoid = new Asteroidz("lrg", 0.25, new Pos(xPos, yPos), new Vector(xVol, 0-yVol));
                 newRoid.velocity.scale(SPD);                
                 //console.log(newRoid);
                 
@@ -305,7 +305,7 @@ var gameLayer = cc.Layer.extend({
             exitVect2[0].scale(obj2.velocity.magnitude());
             exitVect2[1].scale(obj2.velocity.magnitude());  
             
-            if(obj1.scale > 0.125) {
+            if(obj1.scale > 0.0625) {
                 var subRoid1 = new Asteroidz("?", obj1.scale/2, pos1[0], exitVect1[0]);
                 var subRoid2 = new Asteroidz("?", obj1.scale/2, pos1[1], exitVect1[1]);
                 this.asteroids.push(subRoid1);
@@ -313,7 +313,7 @@ var gameLayer = cc.Layer.extend({
                 this.addChild(subRoid1);
                 this.addChild(subRoid2);
             }
-            if(obj2.scale > 0.125) {
+            if(obj2.scale > 0.0625) {
                 var subRoid1 = new Asteroidz("?", obj2.scale/2, pos2[0], exitVect2[0]);
                 var subRoid2 = new Asteroidz("?", obj2.scale/2, pos2[1], exitVect2[1]);
                 this.asteroids.push(subRoid1);

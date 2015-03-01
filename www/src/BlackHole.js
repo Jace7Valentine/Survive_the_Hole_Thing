@@ -8,9 +8,10 @@ var blackhole = cc.Sprite.extend({
       this.attr({
             name : "hole",
             x: posi.x,
-            y: posi.y,            
+            y: posi.y,        
+            scale: .5,
             rotation: 0,            
-            radius : (this.getContentSize().width / 4),
+            radius : (this.getContentSize().width / 8),
       });
        this.posi = posi;
        this.velocity = vector;
@@ -50,9 +51,10 @@ var ufo = cc.Sprite.extend({
       this.attr({
             name : "ship",
             x: posi.x,
-            y: posi.y,            
+            y: posi.y,        
+            scale: .5,
             rotation: 0,            
-            radius : (this.getContentSize().width/2),
+            radius : (this.getContentSize().width/4),
             hp : 42,
       });
         this.posi = posi;
