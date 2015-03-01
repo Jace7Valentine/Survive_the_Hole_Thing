@@ -20,6 +20,9 @@ var gameLayer = cc.Layer.extend({
         // ask the window size 
         var size = cc.winSize;       
 
+        this.gameOver = false;
+        
+        
         this.screenWidth = size.width;
         this.screenHeight = size.height;
         
@@ -38,10 +41,11 @@ var gameLayer = cc.Layer.extend({
         this.blackholeList[0] =  new blackhole(new Pos(size.width/2, size.height/2), new Vector(0,0));
         this.scheduleUpdate();
         //this.generateAsteroies();
-        this.addChild(this.ship);
         this.addChild(this.blackholeList[0]);
+        this.addChild(this.ship);
         this.schedule(this.generateAsteroies, 1);
-        this.schedule(this.collidez);        
+        this.schedule(this.collidez);
+        this.schedule(this.dead);
         
         console.log("BHL" + this.blackholeList);
         console.log("BHL" + this.blackholeList[0].x);
@@ -58,8 +62,8 @@ var gameLayer = cc.Layer.extend({
                     target.blackholeList[0].y = 10000;
                     target.blackholeList[0].posi.x = 10000;
                     target.blackholeList[0].posi.y = 10000;
-                }
-                else {
+                } 
+                else { 
                     //console.log("ELSE BITHCH GET OUT THE WAY!");
                     var touch = touches[0];
                     //if (this.prevTouchId != touch.getID()) {
@@ -77,9 +81,15 @@ var gameLayer = cc.Layer.extend({
                   //  }
                 }
             }
-        }, this);       
+        }, this); 
+        
         
         return true;
+    },
+    
+    dead: function () {
+        console.log(this.ship.hp);
+        if (this.gameOver) { cc.director.runScene(new EndScene()); }
     },
     
     update:function (dt) { 
@@ -198,6 +208,20 @@ var gameLayer = cc.Layer.extend({
             }
         }
         
+        for(var i = 0; i < this.asteroids.length; i++) {
+            var roid1 = this.asteroids[i];
+            var dist = roid1.posi.distanceTo(this.ship.posi);
+            if(dist < this.ship.radius + roid1.radius){
+                this.removeChild(roid1);
+                this.asteroids.splice(i--, 1);
+                this.ship.hp -= (roid1.scale * 8);
+            }
+            
+        }
+        
+        if (this.ship.posi.distanceTo(this.blackholeList[0].posi) < this.blackholeList[0].radius) 
+            { this.ship.hp -= 10000000; }
+        
         var collided = [];
         for(var i = 0; i < this.asteroids.length; i++) {
             var roid1 = this.asteroids[i];
@@ -211,7 +235,7 @@ var gameLayer = cc.Layer.extend({
                     if(collided.indexOf(roids1) == -1 &&
                        collided.indexOf(roids2) == -1) {   
                         var pick = Math.floor(Math.random()*4);
-                        if(pick == 0)
+                        /*if(pick == 0)
                             cc.audioEngine.playMusic(sound.ping1, false);
                         if(pick == 1)
                             cc.audioEngine.playMusic(sound.ping2, false);
@@ -219,7 +243,7 @@ var gameLayer = cc.Layer.extend({
                             cc.audioEngine.playMusic(sound.ping3, false);
                         if(pick == 3)
                             cc.audioEngine.playMusic(sound.ping4, false);
-                        collided[collided.length] = roids1;                        
+                        */collided[collided.length] = roids1;                        
                     }
                 }
             }
@@ -231,6 +255,9 @@ var gameLayer = cc.Layer.extend({
                this.asteroids.indexOf(roids[1]) !== -1)
                 this.breakApart(collided[i][0], collided[i][1]);
         }
+        
+        
+        if (this.ship.amDead()) { this.gameOver = true; }
     },
     
     breakApart:function(obj1, obj2) {        

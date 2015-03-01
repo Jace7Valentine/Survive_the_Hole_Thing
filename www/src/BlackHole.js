@@ -53,7 +53,7 @@ var ufo = cc.Sprite.extend({
             y: posi.y,            
             rotation: 0,            
             radius : (this.getContentSize().width/2),
-            hp : 100,
+            hp : 42,
       });
         this.posi = posi;
         this.velocity = vector;
