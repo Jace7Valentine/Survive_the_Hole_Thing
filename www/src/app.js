@@ -8,6 +8,7 @@ var DefineThisBitch = cc.Scene.extend({
 
 var gameLayer = cc.Layer.extend({
     sprite:null,
+    blackholeList:[],
     ctor:function () {
         //////////////////////////////
         // 1. super init first
@@ -22,7 +23,7 @@ var gameLayer = cc.Layer.extend({
         this.screenWidth = size.width;
         this.screenHeight = size.height;
         
-        this.blackholeList = [];
+        
                
         this.asteroids = [];        
         
@@ -34,36 +35,45 @@ var gameLayer = cc.Layer.extend({
         bckgrnd.setPosition(cc.p(size.width / 2, size.height / 2));
         this.addChild(bckgrnd, 0);
         
-
-        this.blackholeList[0] = new blackhole(new Pos(size.width/2, size.height/2), new Vector(0,0)); 
+        this.blackholeList[0] =  new blackhole(new Pos(size.width/2, size.height/2), new Vector(0,0));
         this.scheduleUpdate();
         //this.generateAsteroies();
         this.addChild(this.blackholeList[0]);
         this.schedule(this.generateAsteroies, 1);
         this.schedule(this.collidez);        
         
+        console.log("BHL" + this.blackholeList);
+        console.log("BHL" + this.blackholeList[0].x);
+        
         cc.eventManager.addListener({
+            prevTouchId: -1,
             event: cc.EventListener.TOUCH_ALL_AT_ONCE,
-            swallowTouches: true, onTouchBegan: function (touches, event) {
+            onTouchesEnded: function (touches, event) {
+                console.log(touches.length);
+                var target = event.getCurrentTarget();
                 if (touches.length > 1) {
-                    this.blackholeList[0].x = 10000;
-                    this.blackholeList[0].y = 10000;
-                    this.blackholeList[0].posi.x = 10000;
-                    this.blackholeList[0].posi.y = 10000;
+                    //console.log("HEY LIsSTEN");
+                    target.blackholeList[0].x = 10000;
+                    target.blackholeList[0].y = 10000;
+                    target.blackholeList[0].posi.x = 10000;
+                    target.blackholeList[0].posi.y = 10000;
                 }
                 else {
+                    //console.log("ELSE BITHCH GET OUT THE WAY!");
                     var touch = touches[0];
-                    if (this.prevTouchId != touch.getID())
-                        this.prevTouchId = touch.getID();
-                    else  
-                        var xP = event.getCurrentTarget().x;
-                        var yP = event.getCurrentTarget().y;
-                        
-                        this.blackholeList[0].x = xP;
-                        this.blackholeList[0].y = yP;
-                        this.blackholeList[0].posi.x = xP;
-                        this.blackholeList[0].posi.y = yP;
-                        
+                    //if (this.prevTouchId != touch.getID()) {
+                      //  this.prevTouchId = touch.getID(); }
+                   // else  {
+                        //console.log("SUPER SAYYYIN BOYYA MOFO");
+                        console.log(this.blackholeList);
+                        var xP = touch.getLocation().x;
+                        var yP = touch.getLocation().y;
+                    
+                        target.blackholeList[0].x = xP;
+                        target.blackholeList[0].y = yP;
+                        target.blackholeList[0].posi.x = xP;
+                        target.blackholeList[0].posi.y = yP;
+                  //  }
                 }
             }
         }, this);
@@ -89,7 +99,7 @@ var gameLayer = cc.Layer.extend({
         
         //if (this.newSpawn > this.spawnRate) {  
            // this.newSpawn = 0;
-            console.log("generate!");          
+            //console.log("generate!");          
             
                 var midX = this.screenWidth/2;
                 var midY = this.screenHeight/2;
@@ -208,7 +218,7 @@ var gameLayer = cc.Layer.extend({
         }       
         for(var i = 0; i < collided.length; i++) {
             var roids = collided[i];
-            console.log(roids);
+            //console.log(roids);
             if(this.asteroids.indexOf(roids[0]) !== -1 &&
                this.asteroids.indexOf(roids[1]) !== -1)
                 this.breakApart(collided[i][0], collided[i][1]);
