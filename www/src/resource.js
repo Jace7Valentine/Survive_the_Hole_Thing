@@ -7,10 +7,23 @@ var asset = {
     Gameover_png : "asset/GameOver.png"
 };
 
+var sound = {
+    ping1 : "asset/sound1.ogg",
+    ping2 : "asset/sound2.ogg",
+    ping3 : "asset/sound3.ogg",
+    ping4 : "asset/sound4.ogg"
+};
+
 var g_resources = [];
 for (var i in asset) {
     g_resources.push(asset[i]);
 }
+
+var s_resources = [];
+for (var j in sound) {
+    s_resources.push(sound[j]);
+}
+
 
 //Constants:
 var G = 2.5; //gravitational constant gravity
