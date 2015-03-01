@@ -33,7 +33,7 @@ var gameLayer = cc.Layer.extend({
         // position the label on the center of the screen
         this.hpText.x = size.width/2;
         this.hpText.y = 160;
-        this.addChild(this.hpText, 5);
+        //this.addChild(this.hpText, 5);
         
         var bckgrnd = new cc.Sprite.create(asset.Background_png);
         //console.log("background" + bckgrnd, bckgrnd);
@@ -47,7 +47,7 @@ var gameLayer = cc.Layer.extend({
         this.scheduleUpdate();
         //this.generateAsteroies();
         this.addChild(this.blackholeList[0]);
-        this.addChild(this.ship);
+        //this.addChild(this.ship);
         this.schedule(this.generateAsteroies, 1);
         this.schedule(this.collidez);
         this.schedule(this.dead);
@@ -212,7 +212,7 @@ var gameLayer = cc.Layer.extend({
                 this.asteroids.splice(i--, 1);
             }
         }
-        
+        /*
         for(var i = 0; i < this.asteroids.length; i++) {
             var roid1 = this.asteroids[i];
             var dist = roid1.posi.distanceTo(this.ship.posi);
@@ -222,10 +222,10 @@ var gameLayer = cc.Layer.extend({
                 this.ship.hp -= (roid1.scale * 8);
             }
             
-        }
+        }*/
         
-        if (this.ship.posi.distanceTo(this.blackholeList[0].posi) < this.blackholeList[0].radius) 
-            { this.ship.hp -= 10000000; }
+        //if (this.ship.posi.distanceTo(this.blackholeList[0].posi) < this.blackholeList[0].radius) 
+        //    { this.ship.hp -= 10000000; }
         
         var collided = [];
         for(var i = 0; i < this.asteroids.length; i++) {
@@ -260,9 +260,9 @@ var gameLayer = cc.Layer.extend({
                this.asteroids.indexOf(roids[1]) !== -1)
                 this.breakApart(collided[i][0], collided[i][1]);
         }
-        this.hpText.setString("HP: " + this.ship.hp);        
+        //this.hpText.setString("HP: " + this.ship.hp);        
         
-        if (this.ship.amDead()) { this.gameOver = true; }
+        //if (this.ship.amDead()) { this.gameOver = true; }
     },
     
     breakApart:function(obj1, obj2) {        
