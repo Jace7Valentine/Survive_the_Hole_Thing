@@ -28,7 +28,12 @@ var gameLayer = cc.Layer.extend({
         
         this.ship = new ufo(new Pos(size.width/4, size.height/2), new Vector(0,0));
                
-        this.asteroids = [];        
+        this.asteroids = [];      
+        this.hpText = new cc.LabelTTF("HP: " + this.ship.hp, "Impact", 80);
+        // position the label on the center of the screen
+        this.hpText.x = size.width/2;
+        this.hpText.y = 160;
+        this.addChild(this.hpText, 5);
         
         var bckgrnd = new cc.Sprite.create(asset.Background_png);
         //console.log("background" + bckgrnd, bckgrnd);
@@ -255,7 +260,7 @@ var gameLayer = cc.Layer.extend({
                this.asteroids.indexOf(roids[1]) !== -1)
                 this.breakApart(collided[i][0], collided[i][1]);
         }
-        
+        this.hpText.setString("HP: " + this.ship.hp);        
         
         if (this.ship.amDead()) { this.gameOver = true; }
     },
@@ -272,7 +277,7 @@ var gameLayer = cc.Layer.extend({
             var colVector1 = obj2.posi.to(obj1.posi);
             colVector1.unitize();            
             
-            var ang = Math.PI/6;
+            var ang = Math.PI/4;
             var exitVect1 = [];
             exitVect1[0] = rotateVect(colVector1, -ang);
             
@@ -287,13 +292,13 @@ var gameLayer = cc.Layer.extend({
             var pos1 = [];
             pos1[0] = new Pos(obj1.x + obj1.radius*exitVect1[0].delx,
                               obj1.y + obj1.radius*exitVect1[0].dely);
-            pos1[1] = new Pos(obj1.x - obj1.radius*exitVect1[1].delx,
-                              obj1.y - obj1.radius*exitVect1[1].dely);
+            pos1[1] = new Pos(obj1.x + obj1.radius*exitVect1[1].delx,
+                              obj1.y + obj1.radius*exitVect1[1].dely);
             var pos2 = [];
             pos2[0] = new Pos(obj2.x + obj2.radius*exitVect2[0].delx,
                               obj2.y + obj2.radius*exitVect2[0].dely);
-            pos2[1] = new Pos(obj2.x - obj2.radius*exitVect2[1].delx,
-                              obj2.y - obj2.radius*exitVect2[1].dely);
+            pos2[1] = new Pos(obj2.x + obj2.radius*exitVect2[1].delx,
+                              obj2.y + obj2.radius*exitVect2[1].dely);
            
             exitVect1[0].scale(obj1.velocity.magnitude());            
             exitVect1[1].scale(obj1.velocity.magnitude());
