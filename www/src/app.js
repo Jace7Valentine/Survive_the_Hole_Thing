@@ -48,18 +48,17 @@ var gameLayer = cc.Layer.extend({
         //this.generateAsteroies();
         this.addChild(this.blackholeList[0]);
         //this.addChild(this.ship);
-        this.schedule(this.generateAsteroies, 1);
+        this.schedule(this.generateAsteroies, 0.25);
         this.schedule(this.collidez);
-        this.schedule(this.dead);
+        //this.schedule(this.dead);
         
-        console.log("BHL" + this.blackholeList);
-        console.log("BHL" + this.blackholeList[0].x);
+        
         
         cc.eventManager.addListener({
             prevTouchId: -1,
             event: cc.EventListener.TOUCH_ALL_AT_ONCE,
             onTouchesEnded: function (touches, event) {
-                console.log(touches.length);
+                //console.log(touches.length);
                 var target = event.getCurrentTarget();
                 if (touches.length > 1) {
                     //console.log("HEY LIsSTEN");
@@ -68,22 +67,16 @@ var gameLayer = cc.Layer.extend({
                     target.blackholeList[0].posi.x = 10000;
                     target.blackholeList[0].posi.y = 10000;
                 } 
-                else { 
-                    //console.log("ELSE BITHCH GET OUT THE WAY!");
-                    var touch = touches[0];
-                    //if (this.prevTouchId != touch.getID()) {
-                      //  this.prevTouchId = touch.getID(); }
-                   // else  {
-                        //console.log("SUPER SAYYYIN BOYYA MOFO");
-                        console.log(this.blackholeList);
+                else {                     
+                    var touch = touches[0];                    
+                        //console.log(this.blackholeList);
                         var xP = touch.getLocation().x;
                         var yP = touch.getLocation().y;
                     
                         target.blackholeList[0].x = xP;
                         target.blackholeList[0].y = yP;
                         target.blackholeList[0].posi.x = xP;
-                        target.blackholeList[0].posi.y = yP;
-                  //  }
+                        target.blackholeList[0].posi.y = yP;                 
                 }
             }
         }, this); 
@@ -93,7 +86,7 @@ var gameLayer = cc.Layer.extend({
     },
     
     dead: function () {
-        console.log(this.ship.hp);
+        //console.log(this.ship.hp);
         if (this.gameOver) { cc.director.runScene(new EndScene()); }
     },
     
@@ -169,12 +162,12 @@ var gameLayer = cc.Layer.extend({
                     yVol = Math.cos(radTraj); 
                 }
                 
-                var newRoid = new Asteroidz("lrg", 0.25, new Pos(xPos, yPos), new Vector(xVol, 0-yVol));
+                var newRoid = new Asteroidz("lrg", LARGE_ASS_SIZE, new Pos(xPos, yPos), new Vector(xVol, 0-yVol));
                 newRoid.velocity.scale(SPD);                
                 //console.log(newRoid);
                 
                 this.asteroids.push(newRoid);
-                this.addChild(newRoid, 1);                
+                this.addChild(newRoid, 0.5);                
                 
     },
     
@@ -208,6 +201,7 @@ var gameLayer = cc.Layer.extend({
             var roid1 = this.asteroids[i];
             var dist = roid1.posi.distanceTo(this.blackholeList[0].posi);
             if(dist < this.blackholeList[0].radius){
+                this.blackholeList[0].mass += roid1.scale*8;
                 this.removeChild(roid1);
                 this.asteroids.splice(i--, 1);
             }
@@ -236,7 +230,7 @@ var gameLayer = cc.Layer.extend({
                 if(i !== j && dist < roid1.radius + roid2.radius) {
                     var roids1 = [roid1, roid2];
                     var roids2 = [roid2, roid1];
-                    //console.log(roids1);
+                    
                     if(collided.indexOf(roids1) == -1 &&
                        collided.indexOf(roids2) == -1) {   
                         var pick = Math.floor(Math.random()*4);
@@ -255,7 +249,7 @@ var gameLayer = cc.Layer.extend({
         }       
         for(var i = 0; i < collided.length; i++) {
             var roids = collided[i];
-            //console.log(roids);
+            
             if(this.asteroids.indexOf(roids[0]) !== -1 &&
                this.asteroids.indexOf(roids[1]) !== -1)
                 this.breakApart(collided[i][0], collided[i][1]);
@@ -305,7 +299,7 @@ var gameLayer = cc.Layer.extend({
             exitVect2[0].scale(obj2.velocity.magnitude());
             exitVect2[1].scale(obj2.velocity.magnitude());  
             
-            if(obj1.scale > 0.0625) {
+            if(obj1.scale > SMALL_ASS_SIZE) {
                 var subRoid1 = new Asteroidz("?", obj1.scale/2, pos1[0], exitVect1[0]);
                 var subRoid2 = new Asteroidz("?", obj1.scale/2, pos1[1], exitVect1[1]);
                 this.asteroids.push(subRoid1);
@@ -313,7 +307,7 @@ var gameLayer = cc.Layer.extend({
                 this.addChild(subRoid1);
                 this.addChild(subRoid2);
             }
-            if(obj2.scale > 0.0625) {
+            if(obj2.scale > SMALL_ASS_SIZE) {
                 var subRoid1 = new Asteroidz("?", obj2.scale/2, pos2[0], exitVect2[0]);
                 var subRoid2 = new Asteroidz("?", obj2.scale/2, pos2[1], exitVect2[1]);
                 this.asteroids.push(subRoid1);

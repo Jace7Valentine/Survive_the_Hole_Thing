@@ -30,3 +30,9 @@ for (var j in sound) {
 var G = 5; //gravitational constant gravity
 var TICK = 1.0/60.0;// sec per tick
 var SPD = 200.0; // px per sec
+//scale of the smallest asteroid
+var SMALL_ASS_SIZE = 0.125;
+// how many small asteroids 
+var LARGE_ASS_SIZE = SMALL_ASS_SIZE*4;
+// scales Ship and BlackHole images
+var SCALE_PNG = 1;
