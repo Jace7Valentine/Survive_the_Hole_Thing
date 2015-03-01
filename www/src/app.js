@@ -23,7 +23,7 @@ var gameLayer = cc.Layer.extend({
         this.screenWidth = size.width;
         this.screenHeight = size.height;
         
-        
+        this.ship = new ufo(new Pos(size.width/4, size.height/2), new Vector(0,0));
                
         this.asteroids = [];        
         
@@ -38,6 +38,7 @@ var gameLayer = cc.Layer.extend({
         this.blackholeList[0] =  new blackhole(new Pos(size.width/2, size.height/2), new Vector(0,0));
         this.scheduleUpdate();
         //this.generateAsteroies();
+        this.addChild(this.ship);
         this.addChild(this.blackholeList[0]);
         this.schedule(this.generateAsteroies, 1);
         this.schedule(this.collidez);        
@@ -85,13 +86,15 @@ var gameLayer = cc.Layer.extend({
         return true;
     },
     
-    update:function (dt) {        
+    update:function (dt) { 
+        this.blackholeList[0].pull(this.ship);
         for(var i = 0; i < this.asteroids.length; i++) {
             var roid = this.asteroids[i];
             this.blackholeList[0].pull(roid);
             roid.move();
         }       
         this.blackholeList[0].move();
+        this.ship.move();
     },
     
     generateAsteroies:function() {
@@ -297,18 +300,5 @@ var gameLayer = cc.Layer.extend({
 
 
 
-var ufo = cc.Sprite.extend({
-    ctor:function(arg) {
-      this._super(asset.Ufo_png);
-      this.attr({
-            name: "ufo",
-            x: cc.winSize.width / 2,
-            y: cc.winSize.height / 2,
-            scale: 0.25,
-            rotation: 0,
-            xVelocity : 0,
-            yVelocity : 0,
-      });
-    }
-});
+
 

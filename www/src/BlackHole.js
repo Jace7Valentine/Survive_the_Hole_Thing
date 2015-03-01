@@ -44,3 +44,34 @@ var blackhole = cc.Sprite.extend({
     }
 });
 
+var ufo = cc.Sprite.extend({
+    ctor:function(posi, vector) {
+      this._super(asset.Ufo_png);
+      this.attr({
+            name : "ship",
+            x: posi.x,
+            y: posi.y,            
+            rotation: 0,            
+            radius : (this.getContentSize().width/2),
+      });
+        this.posi = posi;
+        this.velocity = vector;
+        this.move = function() {
+            this.rotation -= 0.5;
+            this.posi.move(this.velocity);
+            // wrap coordinates           
+            if(this.posi.x < 0 - this.radius)
+                this.posi.x = cc.winSize.width + this.radius;
+            if(this.posi.x > cc.winSize.width + this.radius)
+                this.posi.x = 0 - this.radius;
+            if(this.posi.y < 0 - this.radius)
+                this.posi.y = cc.winSize.height + this.radius;
+            if(this.posi.y > cc.winSize.height + this.radius)
+                this.posi.y = 0 - this.radius;
+            //sync coordinates
+            this.x = this.posi.x;
+            this.y = this.posi.y;           
+	   };
+    }
+});
+
