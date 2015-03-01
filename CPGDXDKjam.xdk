@@ -4,7 +4,7 @@
     "creationData": {
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "projectGuid": "73dfd668-3205-4549-954b-3fcd57e1bfa9",
-      "lastModifiedDate": 1425092922660,
+      "lastModifiedDate": 1425197532957,
       "creationDate": 1425092922599
     },
     "sourceDirectory": "www",
@@ -112,7 +112,7 @@
           "Orientation": "landscape"
         },
         "isActive_": true,
-        "appName_": "CPGDXDKjam",
+        "appName_": "Survive the Hole Thing",
         "appID_": "xdk.intel.cocos2d.js.landscape.project",
         "appAccess_": [
           {

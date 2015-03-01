@@ -240,14 +240,14 @@ var gameLayer = cc.Layer.extend({
                     if(collided.indexOf(roids1) == -1 &&
                        collided.indexOf(roids2) == -1) {   
                         var pick = Math.floor(Math.random()*4);
-                        if(pick == 0)
+                        /*if(pick == 0)
                             cc.audioEngine.playMusic(sound.ping1, false);
                         if(pick == 1)
                             cc.audioEngine.playMusic(sound.ping2, false);
                         if(pick == 2)
                             cc.audioEngine.playMusic(sound.ping3, false);
                         if(pick == 3)
-                            cc.audioEngine.playMusic(sound.ping4, false);
+                            cc.audioEngine.playMusic(sound.ping4, false);*/
                         collided[collided.length] = roids1;                        
                     }
                 }
