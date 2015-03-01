@@ -23,6 +23,7 @@ var gameLayer = cc.Layer.extend({
         this.screenHeight = size.height;
         
         this.blackholeList = [];
+               
         this.asteroids = [];        
         
         var bckgrnd = new cc.Sprite.create(asset.Background_png);
@@ -34,20 +35,23 @@ var gameLayer = cc.Layer.extend({
         this.addChild(bckgrnd, 0);
         
 
+        this.blackholeList[0] = new blackhole(new Pos(size.width/2, size.height/2), new Vector(0,0)); 
         this.scheduleUpdate();
         //this.generateAsteroies();
+        this.addChild(this.blackholeList[0]);
         this.schedule(this.generateAsteroies, 1);
         this.schedule(this.collidez);        
         
         return true;
     },
     
-    update:function (dt) {
+    update:function (dt) {        
         for(var i = 0; i < this.asteroids.length; i++) {
             var roid = this.asteroids[i];
+            this.blackholeList[0].pull(roid);
             roid.move();
         }       
-        
+        this.blackholeList[0].move();
     },
     
     generateAsteroies:function() {
@@ -146,6 +150,15 @@ var gameLayer = cc.Layer.extend({
     },   
     
     collidez:function() {
+        for(var i = 0; i < this.asteroids.length; i++) {
+            var roid1 = this.asteroids[i];
+            var dist = roid1.posi.distanceTo(this.blackholeList[0].posi);
+            if(dist < this.blackholeList[0].radius){
+                this.removeChild(roid1);
+                this.asteroids.splice(i--, 1);
+            }
+        }
+        
         var collided = [];
         for(var i = 0; i < this.asteroids.length; i++) {
             var roid1 = this.asteroids[i];
@@ -259,17 +272,3 @@ var ufo = cc.Sprite.extend({
     }
 });
 
-var blackhole = cc.Sprite.extend({
-    ctor:function(arg) {
-      this._super(asset.Blackhole_png);
-      this.attr({
-            name : "blk",
-            x: cc.winSize.width / 2,
-            y: cc.winSize.height / 2,
-            scale: 0.375,
-            rotation: 0,
-            xVelocity : 0,
-            yVelocity : 0,
-      });
-    }
-});

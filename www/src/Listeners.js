@@ -8,7 +8,7 @@ var accelListen = cc.EventListener.create({
         
         //vector(x,y)
     }
-}, sprite);
+}, this.sprite);
     
 
 var touchListen = cc.EventListener.create({
