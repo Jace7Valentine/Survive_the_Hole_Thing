@@ -14,6 +14,7 @@ var sound = {
     ping4 : "asset/sound4.ogg"
 };
 
+
 var g_resources = [];
 for (var i in asset) {
     g_resources.push(asset[i]);
@@ -21,7 +22,7 @@ for (var i in asset) {
 
 var s_resources = [];
 for (var j in sound) {
-    s_resources.push(sound[j]);
+    s_resources.push(sound[j]);    
 }
 
 

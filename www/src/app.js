@@ -77,11 +77,7 @@ var gameLayer = cc.Layer.extend({
                   //  }
                 }
             }
-        }, this);
-        
-        
-        
-        
+        }, this);       
         
         return true;
     },
@@ -213,7 +209,16 @@ var gameLayer = cc.Layer.extend({
                     var roids2 = [roid2, roid1];
                     //console.log(roids1);
                     if(collided.indexOf(roids1) == -1 &&
-                       collided.indexOf(roids2) == -1) {                        
+                       collided.indexOf(roids2) == -1) {   
+                        var pick = Math.floor(Math.random()*4);
+                        if(pick == 0)
+                            cc.audioEngine.playMusic(sound.ping1, false);
+                        if(pick == 1)
+                            cc.audioEngine.playMusic(sound.ping2, false);
+                        if(pick == 2)
+                            cc.audioEngine.playMusic(sound.ping3, false);
+                        if(pick == 3)
+                            cc.audioEngine.playMusic(sound.ping4, false);
                         collided[collided.length] = roids1;                        
                     }
                 }
@@ -228,9 +233,8 @@ var gameLayer = cc.Layer.extend({
         }
     },
     
-    breakApart:function(obj1, obj2) {
-        
-        this.removeChild(obj1); this.removeChild(obj2);
+    breakApart:function(obj1, obj2) {        
+       
         
         var ratio = obj1.scale / obj2.scale;
         var MOR = 10;
@@ -287,11 +291,17 @@ var gameLayer = cc.Layer.extend({
             }
             this.asteroids.splice(this.asteroids.indexOf(obj1), 1);
             this.asteroids.splice(this.asteroids.indexOf(obj2), 1);
+            this.removeChild(obj1);
+            this.removeChild(obj2);
         }
-        else if(obj1.scale > obj2.scale)
+        else if(obj1.scale > obj2.scale){
+            this.removeChild(obj2);
             this.asteroids.splice(this.asteroids.indexOf(obj2), 1);
-        else
-            this.asteroids.splice(this.asteroids.indexOf(obj1), 1);       
+        }
+        else {
+            this.removeChild(obj1);
+            this.asteroids.splice(this.asteroids.indexOf(obj1), 1);    
+        }
         
         
     }   
